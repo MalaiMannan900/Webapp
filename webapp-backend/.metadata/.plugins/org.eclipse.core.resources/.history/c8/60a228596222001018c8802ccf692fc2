@@ -1,0 +1,26 @@
+package com.webapp.app.userdesignation;
+
+public class UserdesignationQueryUtil {
+	
+	public static final String save_User = "INSERT INTO public.employee (user_id, employee_name, username, password, email, phone_no, gender) values(:code,:employeeName,:username,:password,:emailid,:phoneno,:gender)";
+
+	public static final String GET_CODE = "SELECT CASE WHEN MAX(user_id) IS NULL THEN 'E0001' ELSE 'E' || LPAD(CAST(CAST(SUBSTRING(MAX(user_id), 2) AS INT) + 1 AS TEXT), 4, '0') END AS user_id FROM employee WHERE user_id LIKE 'E%'";
+
+
+	// read
+	public static final String edit_Status = "SELECT user_id AS code, employee_name AS employeeName, username AS username, password, email AS emailid, phone_no AS phoneno, gender FROM public.employee WHERE user_id = ?";
+
+	// update
+	public static final String update_Status = "UPDATE public.employee SET employee_name = :employeeName, username = :username, password = :password, email = :emailid, phone_no = :phoneno, gender = :gender WHERE user_id = :code";
+
+
+	// delete
+	public static final String delete_Status = "DELETE FROM employee where user_id = ?";
+
+	// printing list
+	public static final String getList = "SELECT user_id AS code, employee_name AS employeeName, username AS username, password, email AS emailid, phone_no AS phoneno, gender FROM public.employee order by user_id DESC";
+
+
+	
+	
+}

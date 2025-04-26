@@ -1,0 +1,54 @@
+package com.login.loginregistration.userdesignation;
+
+import java.util.List;
+
+
+public class UserdesignationResultBean {
+
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private List<UserdesignationBean> list;
+	
+	public List<UserdesignationBean> getList() {
+		return list;
+	}
+	public void setList(List<UserdesignationBean> list) {
+		this.list = list;
+	}
+	private List<UserdesignationBean> userBeanDetails;
+	 private UserdesignationBean userBean;
+	 private boolean success;
+	    private String message;
+	    
+		public List<UserdesignationBean> getUserBeanDetails() {
+			return userBeanDetails;
+		}
+		public void setUserBeanDetails(List<UserdesignationBean> userBeanDetails) {
+			this.userBeanDetails = userBeanDetails;
+		}
+		public boolean isSuccess() {
+			return success;
+		}
+		public void setSuccess(boolean success) {
+			this.success = success;
+		}
+		public String getMessage() {
+			return message;
+		}
+		public void setMessage(String message) {
+			this.message = message;
+		}
+		public UserdesignationBean getUserBean() {
+			return userBean;
+		}
+		public void setUserBean(UserdesignationBean userBean) {
+			this.userBean = userBean;
+		}
+		
+}
+
+
+

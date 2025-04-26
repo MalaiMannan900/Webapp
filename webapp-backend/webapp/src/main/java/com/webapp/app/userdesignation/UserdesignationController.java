@@ -1,0 +1,174 @@
+package com.webapp.app.userdesignation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@RestController
+@RequestMapping("/api/v1/crew/user")
+public class UserdesignationController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserdesignationController.class);
+
+    @Autowired
+	UserdesignationService userdesignationService;
+
+    @Autowired
+    private OtpStore otpStore;
+
+    
+    
+    @RequestMapping(value = "/signin", method = RequestMethod.POST)
+    public UserdesignationResultBean signin(@RequestBody UserdesignationBean bean) throws Exception {
+        UserdesignationResultBean objbean = new UserdesignationResultBean();
+        try {
+            logger.info("Received employeeid: " + bean.getEmpid()); // Log the employeeid
+            logger.info("Received password: " + bean.getPassword()); // Log the password
+            
+            boolean isValidUser = userdesignationService.validateUser(bean.getEmpid(), bean.getPassword());
+            if (isValidUser) {
+                objbean.setSuccess(true);  // Indicate success
+                objbean.setMessage("Login successful");
+            } else {
+                objbean.setSuccess(false); // Indicate failure
+                objbean.setMessage("Invalid username or password");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            objbean.setSuccess(false);  // Indicate failure in case of an exception
+            objbean.setMessage("An error occurred while processing the request.");
+        }
+        return objbean;
+    }
+    
+    
+    @RequestMapping(value = "/signin", method = RequestMethod.POST)
+    public UserdesignationResultBean signinmaster(@RequestBody UserdesignationBean bean) throws Exception {
+        UserdesignationResultBean result = new UserdesignationResultBean();
+
+        try {
+            if (userdesignationService.validateUser(bean.getEmpid(), bean.getPassword())) {
+                UserdesignationBean user = userdesignationService.findByUsername(bean.getEmpid());
+
+                String otp = generateOtp();
+                otpStore.saveOtp(bean.getEmpid(), otp); // save in memory
+                sendOtpToMobile(user.getPhoneno(), otp); // simulate send OTP
+
+                result.setSuccess(true);
+                result.setMessage("OTP sent to your registered mobile.");
+            } else {
+                result.setSuccess(false);
+                result.setMessage("Invalid employee ID or password.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("Something went wrong during login.");
+        }
+
+        return result;
+    }
+
+
+
+    private void sendOtpToMobile(String mobileNumber, String otp) {
+        System.out.println("Sending OTP " + otp + " to mobile: " + mobileNumber);
+        // Here you can integrate real SMS sending if needed.
+    }
+
+
+
+	private String generateOtp() {
+        int otp = (int) (Math.random() * 9000) + 1000;
+        return String.valueOf(otp);
+    }
+
+    @RequestMapping(value = "/verify-otp", method = RequestMethod.POST)
+    public UserdesignationResultBean verifyOtp(@RequestBody Map<String, String> req) {
+        String empid = req.get("empid");
+        String inputOtp = req.get("otp");
+
+        UserdesignationResultBean result = new UserdesignationResultBean();
+        String storedOtp = otpStore.getOtp(empid);
+
+        if (storedOtp != null && storedOtp.equals(inputOtp)) {
+            result.setSuccess(true);
+            result.setMessage("OTP verified. Login successful.");
+            otpStore.removeOtp(empid); // clean up after use
+        } else {
+            result.setSuccess(false);
+            result.setMessage("Invalid OTP.");
+        }
+
+        return result;
+    }
+
+    
+	@RequestMapping(value = "/save")
+	public UserdesignationResultBean save(@RequestBody UserdesignationBean bean) {
+		UserdesignationResultBean objbean = new UserdesignationResultBean();
+		try {
+			objbean = userdesignationService.save(bean);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return objbean;
+	}
+
+	@RequestMapping(value = "/useredit")
+	public UserdesignationResultBean edit(@RequestParam("id") String code) throws Exception {
+		UserdesignationResultBean objbean = new UserdesignationResultBean();
+		try {
+			objbean = userdesignationService.edit(code);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return objbean;
+
+	}
+
+	@RequestMapping(value="/userupdate")
+	public UserdesignationResultBean update(@RequestBody UserdesignationBean bean) {
+		UserdesignationResultBean rbean = new UserdesignationResultBean();
+		try {
+			rbean = userdesignationService.update(bean);
+		}catch(Exception e){
+			e.printStackTrace();	
+		}
+		return rbean;
+	}
+	
+	@RequestMapping(value="userdelete")
+	public UserdesignationResultBean delete(@RequestParam("id") String id) {
+		UserdesignationResultBean rbean = new UserdesignationResultBean();
+		try {
+			rbean = userdesignationService.delete(id);
+		}catch(Exception e){
+			e.printStackTrace();	
+		}
+		return rbean;
+		
+	}
+	
+	@GetMapping(value = "/getlist")
+	public UserdesignationResultBean getList() {
+		UserdesignationResultBean resultBean = new UserdesignationResultBean();
+		resultBean = userdesignationService.getList();
+		return resultBean;
+	}
+	
+	@GetMapping("/getSequenceCode")
+	public @ResponseBody UserdesignationBean getSequenceCode() {
+		UserdesignationBean getSequenceCode = null;
+
+	   getSequenceCode = userdesignationService.getSequenceCode();
+
+		return getSequenceCode;
+	}
+	
+
+}

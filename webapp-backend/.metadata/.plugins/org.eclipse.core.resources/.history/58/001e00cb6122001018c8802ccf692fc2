@@ -1,0 +1,141 @@
+
+package com.webapp.app.userdesignation;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+
+
+@Repository
+@Transactional
+public class UserdesignationDaoImpl implements UserdesignationDao {
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+
+
+	public UserdesignationBean findByUsername(String empid) {
+	    String sql = "SELECT user_id AS id, username, password FROM office_user WHERE username = ?";
+
+	    return jdbcTemplate.queryForObject(sql, new Object[]{empid}, (rs, rowNum) -> {
+	        UserdesignationBean user = new UserdesignationBean();
+	        user.setId(rs.getString("id"));
+	        user.setEmpid(rs.getString("empid"));
+	        user.setPassword(rs.getString("password"));
+	        return user;
+	    });
+	}
+
+
+	@Override
+	public UserdesignationResultBean save(UserdesignationBean bean) {
+
+		UserdesignationResultBean resultbean = new UserdesignationResultBean();
+		
+		resultbean.setSuccess(false);
+
+		try {
+			Map<String, Object> ofcUserMap = new HashMap<String, Object>();
+			String code = jdbcTemplate.queryForObject(UserdesignationQueryUtil.GET_CODE, new Object[] {}, String.class);
+
+			ofcUserMap.put("code", code);
+			ofcUserMap.put("employeeName", bean.getEmployeeName());
+			ofcUserMap.put("username", bean.getUsername());
+			ofcUserMap.put("password", bean.getPassword());
+			ofcUserMap.put("gender", bean.getGender());
+			ofcUserMap.put("phoneno", bean.getPhoneno());
+			ofcUserMap.put("emailid", bean.getEmailid());
+			
+			namedParameterJdbcTemplate.update(UserdesignationQueryUtil.save_User, ofcUserMap);
+			resultbean.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultbean.setSuccess(false);
+			resultbean.setMessage(ErrorMessage.ERROR_ADD);
+		}
+		return resultbean;
+	}
+
+	@Override
+	public UserdesignationResultBean edit(String code){		
+		UserdesignationResultBean resultBean = new UserdesignationResultBean();
+		resultBean.setSuccess(false);
+		try {
+			resultBean.setList(jdbcTemplate.query(UserdesignationQueryUtil.edit_Status,new Object[] { code }, new BeanPropertyRowMapper<UserdesignationBean>(UserdesignationBean.class)));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return resultBean; 
+	}
+
+
+	@Override
+	public UserdesignationResultBean delete(String code) {
+		UserdesignationResultBean resultBean = new UserdesignationResultBean();
+		try {
+			if (code != null) {
+				jdbcTemplate.update(UserdesignationQueryUtil.delete_Status, code);
+				resultBean.setSuccess(true);
+			}
+		} catch (Exception e) {
+			resultBean.setSuccess(false);
+			e.printStackTrace();
+		}
+		return resultBean;
+	}
+
+
+	@Override
+	public UserdesignationResultBean getList() {
+		UserdesignationResultBean resultBean = new UserdesignationResultBean();
+		List<UserdesignationBean> listBean = new ArrayList<UserdesignationBean>();
+		
+		try {
+			listBean = jdbcTemplate.query(UserdesignationQueryUtil.getList,new BeanPropertyRowMapper<UserdesignationBean>(UserdesignationBean.class));
+			resultBean.setList(listBean);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultBean;
+	}
+	
+	
+	@Override
+	public UserdesignationResultBean update(UserdesignationBean bean) {
+		UserdesignationResultBean resultBean = new UserdesignationResultBean();
+		resultBean.setSuccess(false);
+		try {
+			Map<String, Object> ofcUserMap = new HashMap<String, Object>();
+			ofcUserMap.put("code", bean.getCode());
+			ofcUserMap.put("employeeName", bean.getEmployeeName());
+			ofcUserMap.put("username", bean.getUsername());
+			ofcUserMap.put("password", bean.getPassword());
+			ofcUserMap.put("gender", bean.getGender());
+			ofcUserMap.put("phoneno", bean.getPhoneno());
+			ofcUserMap.put("emailid", bean.getEmailid());
+			
+			namedParameterJdbcTemplate.update(UserdesignationQueryUtil.update_Status, ofcUserMap);
+			resultBean.setSuccess(true);
+		} catch (Exception e) {
+			resultBean.setSuccess(false);
+			e.printStackTrace();
+		}
+		return resultBean;
+	}
+
+	
+	
+}

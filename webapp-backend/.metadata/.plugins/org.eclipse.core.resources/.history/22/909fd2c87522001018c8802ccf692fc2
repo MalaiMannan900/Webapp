@@ -1,0 +1,72 @@
+package com.webapp.app.userdesignation;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserdesignationServiceImpl  implements UserdesignationService {
+
+	@Autowired 
+	UserdesignationDao userdesignationDao ;
+
+	@Override
+	public UserdesignationResultBean save(UserdesignationBean bean) {
+		return userdesignationDao.save(bean);
+	}
+
+	@Override
+	public UserdesignationResultBean edit(String id) {
+		return userdesignationDao.edit(id);
+	}
+
+	@Override
+	public UserdesignationResultBean delete(String code) {
+		return userdesignationDao.delete(code);
+	}
+
+	@Override
+	public UserdesignationResultBean getList() {
+		return userdesignationDao.getList();
+	}
+
+	@Override
+	public UserdesignationResultBean update(UserdesignationBean bean) {
+		return userdesignationDao.update(bean);
+	}
+
+	@Override
+	public boolean validateUser(String empid, String password) {
+	    try {
+	        UserdesignationBean user = userdesignationDao.findByUsername(empid);
+	        if (user != null && user.getPassword().equals(password)) {
+	            return true; // Login successful
+	        }
+	    } catch (Exception e) {
+	        // User not found or DB error
+	        System.out.println("Login failed: " + e.getMessage());
+	    }
+	    return false; // Login failed
+//	}
+
+
+	@Override
+	public UserdesignationBean getSequenceCode() {
+		// TODO Auto-generated method stub
+		return userdesignationDao.getSequenceCode();
+
+	}
+
+	@Override
+	public UserdesignationBean findByUsername(String empid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	
+}
+
+
+
+
+	

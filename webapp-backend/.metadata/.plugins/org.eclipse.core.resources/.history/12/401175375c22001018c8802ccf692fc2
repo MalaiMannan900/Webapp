@@ -1,0 +1,103 @@
+package com.login.loginregistration.userdesignation;
+
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@RestController
+@RequestMapping("/api/v1/crew/user")
+public class UserdesignationController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserdesignationController.class);
+
+    @Autowired
+	UserdesignationService userdesignationService;
+
+    
+    
+    @RequestMapping(value = "/signin", method = RequestMethod.POST)
+    public UserdesignationResultBean signin(@RequestBody UserdesignationBean bean) throws Exception {
+        UserdesignationResultBean objbean = new UserdesignationResultBean();
+        try {
+            logger.info("Received username: " + bean.getUsername()); // Log the username
+            logger.info("Received password: " + bean.getPassword()); // Log the password
+            
+            boolean isValidUser = userdesignationService.validateUser(bean.getUsername(), bean.getPassword());
+            if (isValidUser) {
+                objbean.setSuccess(true);  // Indicate success
+                objbean.setMessage("Login successful");
+            } else {
+                objbean.setSuccess(false); // Indicate failure
+                objbean.setMessage("Invalid username or password");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            objbean.setSuccess(false);  // Indicate failure in case of an exception
+            objbean.setMessage("An error occurred while processing the request.");
+        }
+        return objbean;
+    }
+
+
+    
+    
+	@RequestMapping(value = "/save")
+	public UserdesignationResultBean save(@RequestBody UserdesignationBean bean) {
+		UserdesignationResultBean objbean = new UserdesignationResultBean();
+		try {
+			objbean = userdesignationService.save(bean);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return objbean;
+	}
+
+	@RequestMapping(value = "/useredit")
+	public UserdesignationResultBean edit(@RequestParam("id") String code) throws Exception {
+		UserdesignationResultBean objbean = new UserdesignationResultBean();
+		try {
+			objbean = userdesignationService.edit(code);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return objbean;
+
+	}
+
+	@RequestMapping(value="/userupdate")
+	public UserdesignationResultBean update(@RequestBody UserdesignationBean bean) {
+		UserdesignationResultBean rbean = new UserdesignationResultBean();
+		try {
+			rbean = userdesignationService.update(bean);
+		}catch(Exception e){
+			e.printStackTrace();	
+		}
+		return rbean;
+	}
+	
+	@RequestMapping(value="userdelete")
+	public UserdesignationResultBean delete(@RequestParam("id") String id) {
+		UserdesignationResultBean rbean = new UserdesignationResultBean();
+		try {
+			rbean = userdesignationService.delete(id);
+		}catch(Exception e){
+			e.printStackTrace();	
+		}
+		return rbean;
+		
+	}
+	
+	@GetMapping(value = "/getlist")
+	public UserdesignationResultBean getList() {
+		UserdesignationResultBean resultBean = new UserdesignationResultBean();
+		resultBean = userdesignationService.getList();
+		return resultBean;
+	}
+	
+
+
+}

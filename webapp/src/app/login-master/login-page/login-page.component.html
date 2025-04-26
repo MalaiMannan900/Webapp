@@ -1,0 +1,117 @@
+<style>
+    .layout {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: url('https://t3.ftcdn.net/jpg/01/82/04/38/240_F_182043866_cQZwPYqKo2xZvZ8sSwW7rdRbf72GcsH4.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .login-container h2 {
+      margin: 0 0 20px;
+    }
+
+    .login-container input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .login-container button {
+      width: calc(100% - 20px);
+      padding: 10px;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .login-container button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+  <div class="layout">
+    <div class="color-layer">
+    <div class="content">
+      <br>
+      <!-- <div class="center">
+        <img src="https://t3.ftcdn.net/jpg/01/82/04/38/240_F_182043866_cQZwPYqKo2xZvZ8sSwW7rdRbf72GcsH4.jpg" alt="integro logo" style="width: 50%;">
+      </div> -->
+      
+      <form class="validate-form center" [formGroup]="authForm" (ngSubmit)="onSubmit()">
+        <div class='form-container'>
+          <div class="row">
+            <!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+              <label for='empid' style="font-family: century gothic, sans-serif;">Employee Id </label>
+              <input matInput formControlName="empid" style="color: #282828;font-family: century gothic, sans-serif;" class='input' id='username'>
+              
+              <label for='otp' style="font-family: century gothic, sans-serif;">OTP</label>
+              <input matInput formControlName="otp" style="color: #282828;font-family: century gothic, sans-serif;" class='input' id='otp'>
+              
+              <label for='password' style="font-family: century gothic, sans-serif;">Password </label>
+              <div class="input-container" style="display: flex;">
+                <input matInput [type]="hide ? 'password' : 'text'" style="color: #282828;font-family: century gothic, sans-serif;"
+                  formControlName="password" class="input">
+                <a class="show-pwd-icon" href="#" onClick="return false;" matSuffix (click)="hide = !hide"
+                  [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon style="position: absolute; margin-left: -8%;margin-top: 1%;">{{hide ? 'visibility_off'
+                    : 'visibility'}}</mat-icon>
+                </a>
+
+              </div>
+            </div> -->
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+              <label for='empid' style="font-family: century gothic, sans-serif;">Employee Id</label>
+              <input matInput formControlName="empid" style="color: #282828;font-family: century gothic, sans-serif;" class='input' id='username'>
+            
+              <div *ngIf="showOtpInput; else passwordBlock">
+                <label for='otp' style="font-family: century gothic, sans-serif;">OTP</label>
+                <input matInput formControlName="otp" style="color: #282828;font-family: century gothic, sans-serif;" class='input' id='otp'>
+              </div>
+            
+              <ng-template #passwordBlock>
+                <label for='password' style="font-family: century gothic, sans-serif;">Password</label>
+                <div class="input-container" style="display: flex;">
+                  <input matInput [type]="hide ? 'password' : 'text'" style="color: #282828;font-family: century gothic, sans-serif;"
+                    formControlName="password" class="input">
+                  <a class="show-pwd-icon" href="#" onClick="return false;" matSuffix (click)="hide = !hide"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon style="position: absolute; margin-left: -8%;margin-top: 3%;">
+                      {{hide ? 'visibility_off' : 'visibility'}}
+                    </mat-icon>
+                  </a>
+                </div>
+              </ng-template>
+            </div>
+            
+          </div>
+          <div *ngIf="error" class="alert alert-danger mt-3 mb-0 alertColor">{{error}}</div>
+          <div class="container-auth-form-btn" style="    display: flex;
+          justify-content: center;">
+            <button class="play" style="text-align:center;width: 65%;font-family: century gothic, sans-serif;" color="primary"
+              [class.auth-spinner]="loading" [disabled]="loading">
+              Login </button>
+          </div>
+          <br>
+        </div>
+      </form>
+    </div>
+  </div>
+  </div>

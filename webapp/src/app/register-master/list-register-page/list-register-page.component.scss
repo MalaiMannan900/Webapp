@@ -1,0 +1,372 @@
+// Variables
+$primary-color: #3f51b5;
+$secondary-color: #ff4081;
+$light-gray: #f5f5f5;
+$dark-gray: #333;
+$white: #ffffff;
+$shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+// Main content styling
+.content {
+  padding: 20px;
+  background-color: $light-gray;
+  min-height: calc(100vh - 64px);
+
+  .content-block {
+    background: $white;
+    border-radius: 8px;
+    box-shadow: $shadow;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    .block-header {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+// Card styling
+.card {
+  border: #dbd9e5;
+  border-radius: 8px;
+  box-shadow: $shadow;
+  overflow: hidden;
+  padding: 20px;
+
+  .mat-card-title {
+    font-weight: 600;
+    color: $primary-color;
+  }
+
+  .body {
+    padding: 0;
+  }
+}
+
+// Table header section
+.materialTableHeader {
+  background: #dbd9e5;
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  .header-buttons-left {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    h2 {
+      color: $primary-color;
+      font-size: 1.5rem;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .search-field {
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      padding: 8px 15px 8px 35px;
+      font-size: 14px;
+      transition: all 0.3s;
+      width: 250px;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+      }
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-space {
+      background-color: $primary-color;
+      color: $white;
+      border-radius: 4px;
+      padding: 8px 16px;
+      font-weight: 500;
+      transition: all 0.3s;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    .add-list-icon {
+      font-size: 16px;
+    }
+  }
+
+  .header-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    .export-button {
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: all 0.3s;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        transform: scale(1.1);
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+      }
+    }
+  }
+}
+
+// Table styling
+.mat-table {
+  width: 100%;
+  background: transparent;
+
+  .mat-header-row {
+    background-color: $primary-color;
+    min-height: 48px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    .mat-header-cell {
+      color: #dbd9e5;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  .mat-row {
+    transition: background-color 0.3s;
+
+    &:nth-child(even) {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    &:hover {
+      background-color: rgba($primary-color, 0.05);
+      cursor: pointer;
+    }
+
+    .mat-cell {
+      padding: 12px 16px;
+      color: $dark-gray;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+      .truncated-desc {
+        cursor: pointer;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+}
+
+// Action buttons
+.tbl-action-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 4px;
+  transition: all 0.3s;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: scale(1.1);
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .tbl-fav-edit {
+    color: $primary-color;
+  }
+
+  .tbl-fav-delete {
+    color: $secondary-color;
+  }
+}
+
+// Paginator styling
+.mat-paginator {
+  background: transparent;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
+}
+
+// Loading spinner
+.tbl-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+// No results message
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+}
+
+// Context menu styling
+.context-menu {
+  .mat-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// Form row layout
+.form-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+
+  mat-form-field {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+// Legend color boxes
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+
+  .color-box {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background-color: red; // override per status
+  }
+}
+
+// Section divider
+.section-divider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 20px 0;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .materialTableHeader {
+    .header-buttons-left {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+
+      .search-field {
+        width: 100%;
+      }
+    }
+
+    .header-buttons {
+      justify-content: flex-start;
+      margin-top: 15px;
+    }
+  }
+
+  .mat-table {
+    overflow-x: auto;
+    display: block;
+
+    .mat-header-row, .mat-row {
+      min-width: 600px;
+    }
+  }
+}
+
+
+.action-icons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+
+  button.mat-icon-button {
+    padding: 6px;
+  }
+
+  mat-icon, i.fa {
+    font-size: 20px;
+    vertical-align: middle;
+  }
+}
+
+
+.action-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important;
+}
+
+.action-icons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.snackbar-success {
+  background-color: #4caf50; // Green
+  color: #fff;
+}
+
+.snackbar-error {
+  background-color: #f44336; // Red
+  color: #fff;
+}
